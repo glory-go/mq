@@ -5,6 +5,9 @@ go 1.17
 require (
 	github.com/aliyunmq/mq-http-go-sdk v1.0.3
 	github.com/glory-go/glory v0.0.0-20211204133101-464871c0511f
+	github.com/gogap/errors v0.0.0-20200228125012-531a6449b28c
+	github.com/streadway/amqp v1.0.0
+	google.golang.org/appengine v1.6.7
 )
 
 require (
@@ -20,7 +23,6 @@ require (
 	github.com/go-kit/kit v0.10.0 // indirect
 	github.com/go-logfmt/logfmt v0.5.0 // indirect
 	github.com/go-sql-driver/mysql v1.5.0 // indirect
-	github.com/gogap/errors v0.0.0-20200228125012-531a6449b28c // indirect
 	github.com/gogap/stack v0.0.0-20150131034635-fef68dddd4f8 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
@@ -49,7 +51,6 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.8.1 // indirect
-	github.com/streadway/amqp v1.0.0 // indirect
 	github.com/subosito/gotenv v1.2.0 // indirect
 	github.com/toolkits/concurrent v0.0.0-20150624120057-a4371d70e3e3 // indirect
 	github.com/uber/jaeger-client-go v2.25.0+incompatible // indirect
