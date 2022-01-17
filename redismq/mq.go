@@ -68,7 +68,7 @@ func (s *RedisMQService) Connect() error {
 
 func (s *RedisMQService) Send(topic string, msg []byte) (msgID string, err error) {
 	ctx := context.Background()
-	return s.send(ctx, topic, msg, time.Now().Add(0))
+	return s.send(ctx, topic, msg, time.Now().Add(4 * time.Second))
 }
 
 func (s *RedisMQService) DelaySend(topic string, msg []byte, handleTime time.Time) (msgID string, err error) {
