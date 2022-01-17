@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"time"
+	"strconv"
 
 	"github.com/glory-go/glory/log"
 	"github.com/glory-go/glory/mq"
@@ -32,8 +33,8 @@ func AliyunRocketMQServiceFactory(rawConfig map[string]string) (mq.MQService, er
 	if srv.config.Port == "" {
 		srv.config.Port = "6379"
 	}
-	if srv.config.BuckCnt <= 0 {
-		srv.config.BuckCnt = defaultBuckCnt
+	if srv.config.BuckCnt == "" {
+		srv.config.BuckCnt = "0"
 	}
 	if srv.config.QueueName == "" {
 		srv.config.QueueName = xid.New().String()
@@ -43,13 +44,21 @@ func AliyunRocketMQServiceFactory(rawConfig map[string]string) (mq.MQService, er
 }
 
 func (s *RedisMQService) Connect() error {
+	db, err := strconv.Atoi(s.config.DB)
+	if err != nil {
+                return err
+	}
+        buckCnt, err := strconv.Atoi(s.config.BuckCnt)
+        if err != nil {
+                return err
+        }
 	redisclient := redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%v:%v", s.config.Host, s.config.Port),
 		Username: s.config.Username,
 		Password: s.config.Password,
-		DB:       s.config.DB,
+		DB:       db,
 	})
-	s.client = dqueue.New(context.Background(), s.config.QueueName, s.config.BuckCnt, redisclient)
+	s.client = dqueue.New(context.Background(), s.config.QueueName, buckCnt, redisclient)
 
 	return nil
 }
