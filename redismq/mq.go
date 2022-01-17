@@ -3,8 +3,8 @@ package redismq
 import (
 	"context"
 	"fmt"
-	"time"
 	"strconv"
+	"time"
 
 	"github.com/glory-go/glory/log"
 	"github.com/glory-go/glory/mq"
@@ -46,12 +46,15 @@ func AliyunRocketMQServiceFactory(rawConfig map[string]string) (mq.MQService, er
 func (s *RedisMQService) Connect() error {
 	db, err := strconv.Atoi(s.config.DB)
 	if err != nil {
-                return err
+		return err
 	}
-        buckCnt, err := strconv.Atoi(s.config.BuckCnt)
-        if err != nil {
-                return err
-        }
+	buckCnt, err := strconv.Atoi(s.config.BuckCnt)
+	if err != nil {
+		return err
+	}
+	if buckCnt <= 0 {
+		buckCnt = defaultBuckCnt
+	}
 	redisclient := redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%v:%v", s.config.Host, s.config.Port),
 		Username: s.config.Username,
