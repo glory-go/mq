@@ -10,7 +10,8 @@ require (
 )
 
 require (
-	github.com/go-online-public/delay-queue v0.0.0-20220112105344-dbeee3469932
+	github.com/garyburd/redigo v1.1.1-0.20170615185838-57f1cd7de617 // indirect
+	github.com/go-online-public/delay-queue v0.0.0-20220320095821-1c209655178f
 	github.com/go-redis/redis/v8 v8.11.4
 	github.com/rs/xid v1.2.1
 	github.com/vmihailenco/msgpack v4.0.4+incompatible // indirect

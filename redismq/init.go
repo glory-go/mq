@@ -9,5 +9,5 @@ const (
 )
 
 func init() {
-	mq.RegisterMQType(MQType, AliyunRocketMQServiceFactory)
+	mq.RegisterMQType(MQType, RedisMQServiceFactory)
 }

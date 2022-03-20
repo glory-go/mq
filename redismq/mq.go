@@ -16,15 +16,16 @@ import (
 
 const (
 	defaultBuckCnt = 3
-	retryAfterTime = time.Second * 3
+	defaultTTR     = 3
 )
 
 type RedisMQService struct {
 	config *Config
+	ttr    int64
 	client *dqueue.DelayRedisQueue
 }
 
-func AliyunRocketMQServiceFactory(rawConfig map[string]string) (mq.MQService, error) {
+func RedisMQServiceFactory(rawConfig map[string]string) (mq.MQService, error) {
 	srv := &RedisMQService{
 		config: &Config{},
 	}
@@ -37,8 +38,11 @@ func AliyunRocketMQServiceFactory(rawConfig map[string]string) (mq.MQService, er
 	if srv.config.BuckCnt == "" {
 		srv.config.BuckCnt = "0"
 	}
-	if srv.config.QueueName == "" {
-		srv.config.QueueName = xid.New().String()
+	if srv.config.Topic == "" {
+		srv.config.Topic = xid.New().String()
+	}
+	if srv.config.TTR == "" {
+		srv.config.TTR = "0"
 	}
 
 	return srv, nil
@@ -56,13 +60,21 @@ func (s *RedisMQService) Connect() error {
 	if buckCnt <= 0 {
 		buckCnt = defaultBuckCnt
 	}
+	ttr, err := strconv.ParseInt(s.config.TTR, 10, 64)
+	if err != nil {
+		return err
+	}
+	if ttr <= 0 {
+		ttr = defaultTTR
+	}
+	s.ttr = ttr
 	redisclient := redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%v:%v", s.config.Host, s.config.Port),
 		Username: s.config.Username,
 		Password: s.config.Password,
 		DB:       db,
 	})
-	s.client = dqueue.New(context.Background(), s.config.QueueName, buckCnt, redisclient)
+	s.client = dqueue.New(context.Background(), s.config.Topic, buckCnt, redisclient)
 
 	return nil
 }
@@ -83,7 +95,7 @@ func (s *RedisMQService) send(ctx context.Context, topic string, msg []byte, han
 		Topic: topic,
 		Id:    id,
 		Delay: int64(time.Until(handleTime).Seconds()),
-		TTR:   int64(retryAfterTime.Seconds()),
+		TTR:   s.ttr,
 		Body:  string(msg),
 	}); err != nil {
 		return "", err
