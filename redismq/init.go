@@ -8,6 +8,6 @@ const (
 	MQType = "redismq"
 )
 
-func init() {
+func Init() {
 	mq.RegisterMQType(MQType, RedisMQServiceFactory)
 }
