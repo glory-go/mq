@@ -115,6 +115,9 @@ func (s *RedisMQService) RegisterHandler(topic string, handler mq.MQMsgHandler) 
 		if job == nil {
 			continue
 		}
-		handler(ctx, []byte(job.Body))
+		if err := handler(ctx, []byte(job.Body)); err != nil {
+			continue // 消息会一直被处理，直到处理成功或TTR时间到达
+		}
+		s.client.Remove(ctx, job.Id)
 	}
 }
