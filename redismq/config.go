@@ -1,7 +1,7 @@
 package redismq
 
 type Config struct {
-	Topic   string `yaml:"topic"`
+	Name    string `yaml:"name"`
 	BuckCnt string `yaml:"buck_cnt"` // 使用的桶的数量，默认3个
 	TTR     string `yaml:"ttr"`      // 最长消息等待处理时长，单位为s，默认24h
 

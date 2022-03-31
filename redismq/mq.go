@@ -38,8 +38,8 @@ func RedisMQServiceFactory(rawConfig map[string]string) (mq.MQService, error) {
 	if srv.config.BuckCnt == "" {
 		srv.config.BuckCnt = "0"
 	}
-	if srv.config.Topic == "" {
-		srv.config.Topic = xid.New().String()
+	if srv.config.Name == "" {
+		srv.config.Name = xid.New().String()
 	}
 	if srv.config.TTR == "" {
 		srv.config.TTR = "0"
@@ -74,7 +74,7 @@ func (s *RedisMQService) Connect() error {
 		Password: s.config.Password,
 		DB:       db,
 	})
-	s.client = dqueue.New(context.Background(), s.config.Topic, buckCnt, redisclient)
+	s.client = dqueue.New(context.Background(), s.config.Name, buckCnt, redisclient)
 
 	return nil
 }
