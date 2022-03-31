@@ -112,6 +112,9 @@ func (s *RedisMQService) RegisterHandler(topic string, handler mq.MQMsgHandler) 
 			log.CtxErrorf(ctx, "[%s] fail to get job from redis queue, err: %v", funcName, err)
 			continue
 		}
+		if job == nil {
+			continue
+		}
 		handler(ctx, []byte(job.Body))
 	}
 }
