@@ -4,7 +4,6 @@ go 1.16
 
 require (
 	github.com/aliyunmq/mq-http-go-sdk v1.0.3
-	github.com/garyburd/redigo v1.1.1-0.20170615185838-57f1cd7de617 // indirect
 	github.com/glory-go/glory v0.0.0-20220117093414-332be9ea2158
 	github.com/go-online-public/delay-queue v0.0.0-20220403091404-31f9f209f833
 	github.com/go-redis/redis/v8 v8.11.4
