@@ -94,7 +94,7 @@ func (s *RedisMQService) send(ctx context.Context, topic string, msg []byte, han
 	if err := s.client.Push(ctx, dqueue.Job{
 		Topic: topic,
 		Id:    id,
-		Delay: handleTime.Unix(),
+		Delay: int64(time.Until(handleTime).Seconds()),
 		TTR:   s.ttr,
 		Body:  string(msg),
 	}); err != nil {
