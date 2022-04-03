@@ -198,6 +198,8 @@ github.com/go-logr/logr v0.2.0/go.mod h1:z6/tIYblkpsD+a4lm/fGIIU9mZ+XfAiaFtq7xTg
 github.com/go-ole/go-ole v1.2.4/go.mod h1:XCwSNxSkXRo4vlyPy93sltvi/qJq0jqQhjqQNIwKuxM=
 github.com/go-online-public/delay-queue v0.0.0-20220403091404-31f9f209f833 h1:hukLs+OG+ocL2BcqKJ1gBeIDWuy0kuHDQToLaT0cejU=
 github.com/go-online-public/delay-queue v0.0.0-20220403091404-31f9f209f833/go.mod h1:Bfnp4A2y2IKVrXQEmR+fJTiGKPWDkZrmEcirDXFK5lk=
+github.com/go-online-public/delay-queue v0.0.0-20220403101250-67835ba32fce h1:sfQ/ysZw7XLpyt46fM3EAZSFyjkuqubg6bQ7YK5H5SU=
+github.com/go-online-public/delay-queue v0.0.0-20220403101250-67835ba32fce/go.mod h1:Bfnp4A2y2IKVrXQEmR+fJTiGKPWDkZrmEcirDXFK5lk=
 github.com/go-openapi/jsonpointer v0.0.0-20160704185906-46af16f9f7b1/go.mod h1:+35s3my2LFTysnkMfxsJBAMHj/DoqoB9knIWoYG/Vk0=
 github.com/go-openapi/jsonreference v0.0.0-20160704190145-13c6e3589ad9/go.mod h1:W3Z9FmVs9qj+KR4zFKmDPGiLdk1D9Rlm7cyMvf57TTg=
 github.com/go-openapi/spec v0.0.0-20160808142527-6aced65f8501/go.mod h1:J8+jY1nAiCcj+friV/PDoE1/3eeccG9LYBs0tYvLOWc=
