@@ -1,6 +1,8 @@
 package redismq
 
 import (
+	"fmt"
+
 	"github.com/glory-go/glory/config"
 	"github.com/glory-go/glory/mq"
 	"github.com/glory-go/glory/tools"
@@ -8,23 +10,35 @@ import (
 )
 
 func RedisMQServiceFactory(mod config.ChannelType, rawConfig map[string]string) (mq.MQService, error) {
-	srv := &RedisMQService{
-		config: &Config{},
-	}
-	if err := tools.YamlStructConverter(rawConfig, srv.config); err != nil {
+	conf := &Config{}
+	if err := tools.YamlStructConverter(rawConfig, conf); err != nil {
 		return nil, err
 	}
-	if srv.config.Port == "" {
-		srv.config.Port = "6379"
+	if conf.Port == "" {
+		conf.Port = "6379"
 	}
-	if srv.config.BuckCnt == "" {
-		srv.config.BuckCnt = "0"
+	if conf.BuckCnt == "" {
+		conf.BuckCnt = "0"
 	}
-	if srv.config.Name == "" {
-		srv.config.Name = xid.New().String()
+	if conf.Name == "" {
+		conf.Name = xid.New().String()
 	}
-	if srv.config.TTR == "" {
-		srv.config.TTR = "0"
+	if conf.TTR == "" {
+		conf.TTR = "0"
+	}
+
+	var srv mq.MQService
+	switch mod {
+	case config.Direct:
+		srv = &RedisMQService{
+			config: conf,
+		}
+	case config.PubSub:
+		srv = &PubSubRedisMQService{
+			config: conf,
+		}
+	default:
+		return nil, fmt.Errorf("mod type not support in redismq: %s", mod)
 	}
 
 	return srv, nil
