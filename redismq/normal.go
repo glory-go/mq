@@ -2,13 +2,13 @@ package redismq
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strconv"
 	"time"
 
 	"github.com/glory-go/glory/log"
 	"github.com/glory-go/glory/mq"
-	"github.com/glory-go/glory/tools"
 	dqueue "github.com/go-online-public/delay-queue"
 	"github.com/go-redis/redis/v8"
 	"github.com/rs/xid"
@@ -25,34 +25,22 @@ type RedisMQService struct {
 	client *dqueue.DelayRedisQueue
 }
 
-func RedisMQServiceFactory(rawConfig map[string]string) (mq.MQService, error) {
-	srv := &RedisMQService{
-		config: &Config{},
-	}
-	if err := tools.YamlStructConverter(rawConfig, srv.config); err != nil {
+func conn(conf *Config) (*redis.Client, error) {
+	db, err := strconv.Atoi(conf.DB)
+	if err != nil {
 		return nil, err
 	}
-	if srv.config.Port == "" {
-		srv.config.Port = "6379"
-	}
-	if srv.config.BuckCnt == "" {
-		srv.config.BuckCnt = "0"
-	}
-	if srv.config.Name == "" {
-		srv.config.Name = xid.New().String()
-	}
-	if srv.config.TTR == "" {
-		srv.config.TTR = "0"
-	}
+	redisclient := redis.NewClient(&redis.Options{
+		Addr:     fmt.Sprintf("%v:%v", conf.Host, conf.Port),
+		Username: conf.Username,
+		Password: conf.Password,
+		DB:       db,
+	})
 
-	return srv, nil
+	return redisclient, nil
 }
 
 func (s *RedisMQService) Connect() error {
-	db, err := strconv.Atoi(s.config.DB)
-	if err != nil {
-		return err
-	}
 	buckCnt, err := strconv.Atoi(s.config.BuckCnt)
 	if err != nil {
 		return err
@@ -68,12 +56,10 @@ func (s *RedisMQService) Connect() error {
 		ttr = defaultTTR
 	}
 	s.ttr = ttr
-	redisclient := redis.NewClient(&redis.Options{
-		Addr:     fmt.Sprintf("%v:%v", s.config.Host, s.config.Port),
-		Username: s.config.Username,
-		Password: s.config.Password,
-		DB:       db,
-	})
+	redisclient, err := conn(s.config)
+	if err != nil {
+		return err
+	}
 	s.client = dqueue.New(context.Background(), s.config.Name, buckCnt, redisclient)
 
 	return nil
@@ -87,6 +73,10 @@ func (s *RedisMQService) Send(topic string, msg []byte) (msgID string, err error
 func (s *RedisMQService) DelaySend(topic string, msg []byte, handleTime time.Time) (msgID string, err error) {
 	ctx := context.Background()
 	return s.send(ctx, topic, msg, handleTime)
+}
+
+func (s *RedisMQService) Publish(topic string, msg []byte) (msgID string, err error) {
+	return "", errors.New("invalid mod, don't use Pub() in normal mod")
 }
 
 func (s *RedisMQService) send(ctx context.Context, topic string, msg []byte, handleTime time.Time) (msgID string, err error) {

@@ -180,6 +180,10 @@ github.com/ghodss/yaml v0.0.0-20150909031657-73d445a93680/go.mod h1:4dBDuWmgqj2H
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
 github.com/glory-go/glory v0.0.0-20220117093414-332be9ea2158 h1:D3ypV3eD+1SGg6lHjvIpBtlTNPxFdy3ubsYVJVPZN84=
 github.com/glory-go/glory v0.0.0-20220117093414-332be9ea2158/go.mod h1:LsAoztPFDejFruJ3o4UP2YzLnrkJfmD6fL4cvEYKmlY=
+github.com/glory-go/glory v0.0.0-20220406141254-05fa2d8555da h1:BfTtY/Szfz/Z8ADaizsueXpTWRIgu80+7jhHH4khlYE=
+github.com/glory-go/glory v0.0.0-20220406141254-05fa2d8555da/go.mod h1:4LTQ2dmR2SzraBcGCPcGa1Cc1OZAuWmpR6t/k5wm7B8=
+github.com/glory-go/glory v0.0.0-20220406141816-be172838e645 h1:iIhyiuo3wydXj8+c5q7qkH5ooYIIxDrpOdzkwz1Sdgw=
+github.com/glory-go/glory v0.0.0-20220406141816-be172838e645/go.mod h1:4LTQ2dmR2SzraBcGCPcGa1Cc1OZAuWmpR6t/k5wm7B8=
 github.com/go-errors/errors v1.0.1 h1:LUHzmkK3GUKUrL/1gfBUxAHzcev3apQlezX/+O7ma6w=
 github.com/go-errors/errors v1.0.1/go.mod h1:f4zRHt4oKfwPJE5k8C9vpYG+aDHdBFUsgrm6/TyX73Q=
 github.com/go-gl/glfw v0.0.0-20190409004039-e6da0acd62b1/go.mod h1:vR7hzQXu2zJy9AVAgeJqvqgH9Q5CA+iKCZ2gyEVpxRU=
