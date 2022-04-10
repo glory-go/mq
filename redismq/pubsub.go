@@ -85,7 +85,7 @@ func (s *PubSubRedisMQService) RegisterHandler(topic string, handler mq.MQMsgHan
 			Consumer: consumer,
 			Streams: []string{
 				streamName,
-				"$", // 获取最新的消息
+				">", // 获取最新的消息
 			},
 			Count: 1,
 			Block: BlockTime,
