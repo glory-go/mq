@@ -92,6 +92,9 @@ func (s *PubSubRedisMQService) RegisterHandler(topic string, handler mq.MQMsgHan
 			NoAck: true, // 默认不ack
 		}).Result()
 		if err != nil {
+			if err == redis.Nil {
+				continue
+			}
 			log.CtxErrorf(ctx, "redis mq service xreadgroup error: %v", err)
 			continue
 		}
