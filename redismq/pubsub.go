@@ -27,10 +27,6 @@ func (s *PubSubRedisMQService) Connect() error {
 		return err
 	}
 	s.client = client
-	// 若未提供组名，则报错
-	if s.config.GroupName == "" {
-		return errors.New("group name is empty")
-	}
 
 	return nil
 }
@@ -69,6 +65,10 @@ func (s *PubSubRedisMQService) Publish(topic string, msg []byte) (msgID string, 
 func (s *PubSubRedisMQService) RegisterHandler(topic string, handler mq.MQMsgHandler) {
 	ctx := context.Background()
 	streamName := s.getStreamName(topic)
+	// 若未提供组名，则报错
+	if s.config.GroupName == "" {
+		panic("group name is empty")
+	}
 	// 检查group是否存在，不存在则创建一个
 	_, err := s.client.XGroupCreateMkStream(ctx, streamName, s.config.GroupName, "$").Result()
 	if err != nil {
