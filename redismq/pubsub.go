@@ -13,7 +13,8 @@ import (
 )
 
 const (
-	StreamMaxLen = 10000 // stream最大长度
+	StreamMaxLen = 10000       // stream最大长度
+	BlockTime    = time.Minute // 阻塞读取时间
 )
 
 type PubSubRedisMQService struct {
@@ -84,9 +85,10 @@ func (s *PubSubRedisMQService) RegisterHandler(topic string, handler mq.MQMsgHan
 			Consumer: consumer,
 			Streams: []string{
 				streamName,
+				"$", // 获取最新的消息
 			},
 			Count: 1,
-			Block: time.Second,
+			Block: BlockTime,
 			NoAck: true, // 默认不ack
 		}).Result()
 		if err != nil {
