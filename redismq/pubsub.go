@@ -3,6 +3,7 @@ package redismq
 import (
 	"context"
 	"errors"
+	"strings"
 	"time"
 
 	"github.com/glory-go/glory/log"
@@ -67,7 +68,12 @@ func (s *PubSubRedisMQService) RegisterHandler(topic string, handler mq.MQMsgHan
 	// 检查group是否存在，不存在则创建一个
 	_, err := s.client.XGroupCreateMkStream(ctx, topic, s.config.GroupName, "$").Result()
 	if err != nil {
-		panic(err) // 注意：这里可能为重复创建group
+		if strings.Contains(err.Error(), "BUSYGROUP") {
+			log.Warnf("group %s already exists", s.config.GroupName)
+		} else {
+			log.Errorf("create group %s failed, %s", s.config.GroupName, err.Error())
+			panic(err)
+		}
 	}
 	// 生成consumer name，要求消费组内唯一
 	consumer := xid.New().String()
