@@ -12,8 +12,9 @@ import (
 )
 
 const (
-	StreamMaxLen = 10000       // stream最大长度
-	BlockTime    = time.Minute // 阻塞读取时间
+	StreamMaxLen = 10000           // stream最大长度
+	BlockTime    = time.Minute     // 阻塞读取时间
+	ErrWaitTime  = time.Second * 3 // 请求错误后的重试时间
 )
 
 type PubSubRedisMQService struct {
@@ -89,6 +90,7 @@ func (s *PubSubRedisMQService) RegisterHandler(topic string, handler mq.MQMsgHan
 				continue
 			}
 			log.CtxErrorf(ctx, "redis mq service xreadgroup error: %v", err)
+			time.Sleep(ErrWaitTime)
 			continue
 		}
 		if len(msgs) == 0 {
