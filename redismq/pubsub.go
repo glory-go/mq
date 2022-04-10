@@ -3,7 +3,6 @@ package redismq
 import (
 	"context"
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/glory-go/glory/log"
@@ -32,10 +31,6 @@ func (s *PubSubRedisMQService) Connect() error {
 	return nil
 }
 
-func (s *PubSubRedisMQService) getStreamName(topic string) string {
-	return fmt.Sprintf("%v:%v", s.config.Name, topic)
-}
-
 func (s *PubSubRedisMQService) Send(topic string, msg []byte) (msgID string, err error) {
 	return "", errors.New("invalid mod, don't use Send() in pubsub mod")
 }
@@ -47,9 +42,8 @@ func (s *PubSubRedisMQService) DelaySend(topic string, msg []byte, handleTime ti
 func (s *PubSubRedisMQService) Publish(topic string, msg []byte) (msgID string, err error) {
 	ctx := context.Background()
 	// 使用redis的stream
-	streamName := s.getStreamName(topic)
 	msgID, err = s.client.XAdd(ctx, &redis.XAddArgs{
-		Stream: streamName,
+		Stream: topic,
 		MaxLen: StreamMaxLen,
 		ID:     "*", // 自动生成
 		Values: map[string]interface{}{
@@ -65,13 +59,12 @@ func (s *PubSubRedisMQService) Publish(topic string, msg []byte) (msgID string, 
 
 func (s *PubSubRedisMQService) RegisterHandler(topic string, handler mq.MQMsgHandler) {
 	ctx := context.Background()
-	streamName := s.getStreamName(topic)
 	// 若未提供组名，则报错
 	if s.config.GroupName == "" {
 		panic("group name is empty")
 	}
 	// 检查group是否存在，不存在则创建一个
-	_, err := s.client.XGroupCreateMkStream(ctx, streamName, s.config.GroupName, "$").Result()
+	_, err := s.client.XGroupCreateMkStream(ctx, topic, s.config.GroupName, "$").Result()
 	if err != nil {
 		panic(err) // 注意：这里可能为重复创建group
 	}
@@ -84,7 +77,7 @@ func (s *PubSubRedisMQService) RegisterHandler(topic string, handler mq.MQMsgHan
 			Group:    s.config.GroupName,
 			Consumer: consumer,
 			Streams: []string{
-				streamName,
+				topic,
 				">", // 获取最新的消息
 			},
 			Count: 1,
@@ -104,11 +97,11 @@ func (s *PubSubRedisMQService) RegisterHandler(topic string, handler mq.MQMsgHan
 		msg := msgs[0].Messages[0]
 		log.CtxInfof(ctx, "redis pubsub service receive msg id: %v", msg.ID)
 		// 处理消息
-		if err := handler(ctx, msg.Values["msg"].([]byte)); err != nil {
+		if err := handler(ctx, []byte(msg.Values["msg"].(string))); err != nil {
 			continue
 		}
 		// 删除消息
-		if err := s.client.XAck(ctx, streamName, s.config.GroupName, msg.ID).Err(); err != nil {
+		if err := s.client.XAck(ctx, topic, s.config.GroupName, msg.ID).Err(); err != nil {
 			log.CtxErrorf(ctx, "redis mq service xack error: %v", err)
 		}
 	}
