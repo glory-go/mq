@@ -1,0 +1,14 @@
+service:
+  mq:
+    hibiken_asynq:
+      server1: # 可以定义多个服务
+        addr: RedisAddress
+        username: RedisUsername
+        password: RedisPassword
+        db: 1 # 使用哪个redis db
+
+        max_worker_cnt: 10 # 最多同时多少个worker执行任务
+        queue_priority: # 各个queue的优先级，数字为比例，加起来要求等于10
+          critical: 6
+          default:  3
+          low:      1
