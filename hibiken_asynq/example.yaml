@@ -1,5 +1,5 @@
 service:
-  mq:
+  sub:
     hibiken_asynq:
       server1: # 可以定义多个服务
         addr: RedisAddress
@@ -12,3 +12,9 @@ service:
           critical: 6
           default:  3
           low:      1
+hibiken_asynq:
+  client1: # 可以定义多个客户端
+    addr: RedisAddress
+    username: RedisUsername
+    password: RedisPassword
+    db: 1 # 使用哪个redis db

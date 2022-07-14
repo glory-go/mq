@@ -14,7 +14,7 @@ const (
 
 type asynqSub struct {
 	servers map[string]*asynq.Server
-	config  map[string]*hibikenAsynqConfig
+	config  map[string]*hibikenAsynqSubConfig
 	mux     map[string]*asynq.ServeMux
 
 	g errgroup.Group
@@ -22,14 +22,14 @@ type asynqSub struct {
 
 var (
 	asyncSubInstance *asynqSub
-	once             sync.Once
+	subOnce          sync.Once
 )
 
 func GetAsynqSub() *asynqSub {
-	once.Do(func() {
+	subOnce.Do(func() {
 		asyncSubInstance = &asynqSub{
 			servers: make(map[string]*asynq.Server),
-			config:  make(map[string]*hibikenAsynqConfig),
+			config:  make(map[string]*hibikenAsynqSubConfig),
 			mux:     make(map[string]*asynq.ServeMux),
 		}
 	})
@@ -44,7 +44,7 @@ func (q *asynqSub) Name() string { return HibikenAsynqSubName }
 
 func (q *asynqSub) Init(config map[string]any) error {
 	for name, raw := range config {
-		conf := &hibikenAsynqConfig{}
+		conf := &hibikenAsynqSubConfig{}
 		if err := mapstructure.Decode(raw, conf); err != nil {
 			return err
 		}
@@ -60,6 +60,8 @@ func (q *asynqSub) Init(config map[string]any) error {
 			Queues:      conf.QueuePriority,
 		})
 		q.servers[name] = srv
+
+		q.mux[name] = asynq.NewServeMux()
 	}
 
 	return nil
