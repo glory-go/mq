@@ -1,0 +1,17 @@
+service:
+  sub:
+    redis_stream:
+      server1: # 可以定义多个服务
+        addr: RedisAddress
+        username: RedisUsername
+        password: RedisPassword
+        db: 1 # 使用哪个redis db
+
+        group_name: sub_1 # 监听的消费组
+        aotu_ack: true # 收到消息后，是否自动删除消息。若为false，则只有不返回error时才会ack
+redis_stream:
+  client1: # 可以定义多个客户端
+    addr: RedisAddress
+    username: RedisUsername
+    password: RedisPassword
+    db: 1 # 使用哪个redis db
