@@ -17,18 +17,18 @@ type asynqPub struct {
 }
 
 var (
-	asyncPubInstance *asynqPub
+	asynqPubInstance *asynqPub
 	pubOnce          sync.Once
 )
 
 func GetAsynqPub() *asynqPub {
 	pubOnce.Do(func() {
-		asyncPubInstance = &asynqPub{
+		asynqPubInstance = &asynqPub{
 			config:  make(map[string]*hibikenAsynqPubConfig),
 			clients: make(map[string]*asynq.Client),
 		}
 	})
-	return asyncPubInstance
+	return asynqPubInstance
 }
 
 func (q *asynqPub) GetClient(name string) *asynq.Client {
