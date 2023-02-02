@@ -3,9 +3,9 @@ module github.com/glory-go/mq/v2
 go 1.18
 
 require (
-	github.com/alicebob/miniredis/v2 v2.22.0
-	github.com/glory-go/glory/v2 v2.0.0-20220714153452-c9bd3cf4a46e
-	github.com/go-redis/redis/v8 v8.11.2
+	github.com/alicebob/miniredis/v2 v2.30.0
+	github.com/glory-go/glory/v2 v2.0.0-20230114082741-2c22388f7a21
+	github.com/go-redis/redis/v8 v8.11.5
 	github.com/hibiken/asynq v0.23.0
 	github.com/mitchellh/mapstructure v1.5.0
 	github.com/rs/xid v1.4.0
@@ -15,7 +15,7 @@ require (
 
 require (
 	github.com/alicebob/gopher-json v0.0.0-20200520072559-a9ecdc9d1d3a // indirect
-	github.com/cespare/xxhash/v2 v2.1.1 // indirect
+	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deckarep/golang-set/v2 v2.1.0 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect

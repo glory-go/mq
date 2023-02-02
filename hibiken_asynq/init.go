@@ -13,12 +13,12 @@ var (
 
 func registerPub() {
 	registerPubOnce.Do(func() {
-		config.RegisterComponent(GetAsynqPub())
+		config.RegisterComponent(getAsynqPub())
 	})
 }
 
 func registerSub() {
 	registerSubOnce.Do(func() {
-		sub.GetSub().RegisterSubProvider(GetAsynqSub())
+		sub.GetSub().RegisterSubProvider(getAsynqSub())
 	})
 }

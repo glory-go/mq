@@ -25,7 +25,7 @@ var (
 	subOnce          sync.Once
 )
 
-func GetAsynqSub() *asynqSub {
+func getAsynqSub() *asynqSub {
 	subOnce.Do(func() {
 		asyncSubInstance = &asynqSub{
 			servers: make(map[string]*asynq.Server),
@@ -36,9 +36,9 @@ func GetAsynqSub() *asynqSub {
 	return asyncSubInstance
 }
 
-func (q *asynqSub) GetMux(name string) *asynq.ServeMux {
+func GetMux(name string) *asynq.ServeMux {
 	registerSub()
-	return q.mux[name]
+	return getAsynqSub().mux[name]
 }
 
 func (q *asynqSub) Name() string { return HibikenAsynqSubName }

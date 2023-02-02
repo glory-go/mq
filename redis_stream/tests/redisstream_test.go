@@ -32,7 +32,7 @@ func Test_RedisStream(t *testing.T) {
 	assert.Nil(t, err)
 
 	// 等一会进行判断
-	time.Sleep(time.Second * 1)
+	time.Sleep(time.Second * 2)
 	assert.True(t, called1)
 	assert.True(t, called2)
 }

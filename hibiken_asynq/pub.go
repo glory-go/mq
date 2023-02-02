@@ -21,7 +21,7 @@ var (
 	pubOnce          sync.Once
 )
 
-func GetAsynqPub() *asynqPub {
+func getAsynqPub() *asynqPub {
 	pubOnce.Do(func() {
 		asynqPubInstance = &asynqPub{
 			config:  make(map[string]*hibikenAsynqPubConfig),
@@ -31,9 +31,9 @@ func GetAsynqPub() *asynqPub {
 	return asynqPubInstance
 }
 
-func (q *asynqPub) GetClient(name string) *asynq.Client {
+func GetClient(name string) *asynq.Client {
 	registerPub()
-	return q.clients[name]
+	return getAsynqPub().clients[name]
 }
 
 func (q *asynqPub) Name() string { return HibikenAsynqPubName }

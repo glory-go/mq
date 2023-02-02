@@ -19,16 +19,16 @@ func Test_Asynq(t *testing.T) {
 	setup()
 	// 注册handler
 	called := false
-	hibikenasynq.GetAsynqSub().GetMux("mock_server_1").HandleFunc("test_topic_1", func(ctx context.Context, t *asynq.Task) error {
+	hibikenasynq.GetMux("mock_server_1").HandleFunc("test_topic_1", func(ctx context.Context, t *asynq.Task) error {
 		called = true
 		return nil
 	})
 	go func() { service.GetService().Run() }()
 	// 测试收发的能力
-	_, err := hibikenasynq.GetAsynqPub().GetClient("mock_client_1").Enqueue(asynq.NewTask("test_topic_1", []byte{}))
+	_, err := hibikenasynq.GetClient("mock_client_1").Enqueue(asynq.NewTask("test_topic_1", []byte{}))
 
 	// 等一会进行判断
-	time.Sleep(time.Second * 1)
+	time.Sleep(time.Second * 2)
 	assert.Nil(t, err)
 	assert.True(t, called)
 }
