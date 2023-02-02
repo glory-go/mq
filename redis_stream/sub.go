@@ -73,6 +73,7 @@ func (s *redisStreamSub) Init(config map[string]any) error {
 }
 
 func RegisterHandler(name, topic string, handler MsgHandler) {
+	registerSub()
 	if redisStreamSubInstance.handler[name] == nil {
 		panic("sub " + name + " has no config")
 	}
@@ -142,8 +143,8 @@ func (q *redisStreamSub) Run() error {
 						continue
 					}
 					// 删除消息
-					if !q.config[name].AutoAck {
-						if err := client.XAck(ctx, localTopic, q.config[name].GroupName, msg.ID).Err(); err != nil {
+					if !q.config[localName].AutoAck {
+						if err := client.XAck(ctx, localTopic, q.config[localName].GroupName, msg.ID).Err(); err != nil {
 							fmt.Printf("redis mq service xack error: %v", err)
 						}
 					}

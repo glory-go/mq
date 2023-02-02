@@ -33,6 +33,7 @@ func getAsynqPub() *asynqPub {
 }
 
 func Publish(ctx context.Context, name, topic string, msg []byte) (msgID string, err error) {
+	registerPub()
 	// 使用redis的stream
 	msgID, err = redisStreamPubInstance.clients[name].XAdd(ctx, &redis.XAddArgs{
 		Stream: topic,

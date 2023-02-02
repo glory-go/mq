@@ -37,6 +37,7 @@ func GetAsynqSub() *asynqSub {
 }
 
 func (q *asynqSub) GetMux(name string) *asynq.ServeMux {
+	registerSub()
 	return q.mux[name]
 }
 

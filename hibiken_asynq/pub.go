@@ -32,6 +32,7 @@ func GetAsynqPub() *asynqPub {
 }
 
 func (q *asynqPub) GetClient(name string) *asynq.Client {
+	registerPub()
 	return q.clients[name]
 }
 
