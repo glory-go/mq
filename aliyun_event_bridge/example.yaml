@@ -1,0 +1,6 @@
+aliyun_event_bridge:
+  client1: # 可以定义多个客户端
+    addr: RedisAddress
+    username: RedisUsername
+    password: RedisPassword
+    db: 1 # 使用哪个redis db
