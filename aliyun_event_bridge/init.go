@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	registerPubOnce, registerSubOnce sync.Once
+	registerPubOnce sync.Once
 )
 
 func registerPub() {

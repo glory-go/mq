@@ -1,0 +1,7 @@
+service:
+  sub:
+    aliyun_fc:
+      server1: # 可以定义多个服务
+        addr: :8080
+        read_timeout: 50 # 50ms
+        write_timeout: 50 # 50ms
