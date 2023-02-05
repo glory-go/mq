@@ -1,0 +1,15 @@
+aliyun_event_bridge:
+  client1: # 可以定义多个客户端
+    access_key_id: AliyunAccessKeyID
+    access_key_secret: AliyunAccessKeySecret
+    endpoint: EventBusEndpoint
+
+    event_bus_name: "dev"
+
+service:
+  sub:
+    aliyun_fc:
+      server1: # 可以定义多个服务
+        addr: :8080
+        read_timeout: 50 # 50ms
+        write_timeout: 50 # 50ms
