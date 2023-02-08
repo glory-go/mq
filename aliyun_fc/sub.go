@@ -85,7 +85,7 @@ func (q *aliyunFCSub) Run() error {
 	return q.g.Wait()
 }
 
-type eventBody struct {
+type Event struct {
 	Type    string          `json:"type"`
 	Payload json.RawMessage `json:"payload"`
 }
@@ -93,7 +93,7 @@ type eventBody struct {
 func involkeHandler(name string, mux *asynq.ServeMux) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
 		logger := logrus.WithContext(ctx)
-		event := &eventBody{}
+		event := &Event{}
 		if err := ctx.BindJSON(event); err != nil {
 			logger.Errorf("fail to parse body to event, err: %v", err)
 			ctx.JSON(http.StatusNotFound, err)
