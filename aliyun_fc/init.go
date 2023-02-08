@@ -3,12 +3,19 @@ package aliyunfc
 import (
 	"sync"
 
+	"github.com/glory-go/glory/v2/config"
 	"github.com/glory-go/glory/v2/sub"
 )
 
 var (
-	registerSubOnce sync.Once
+	registerPubOnce, registerSubOnce sync.Once
 )
+
+func registerPub() {
+	registerPubOnce.Do(func() {
+		config.RegisterComponent(getAliyunFCPub())
+	})
+}
 
 func registerSub() {
 	registerSubOnce.Do(func() {

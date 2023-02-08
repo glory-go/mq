@@ -5,3 +5,11 @@ service:
         addr: :8080
         read_timeout: 50 # 50ms
         write_timeout: 50 # 50ms
+
+aliyun_fc:
+  fc1: # 可以定义多个函数
+    access_key_id: AliyunAccessKeyID
+    access_key_secret: AliyunAccessKeySecret
+    endpoint: Endpoint
+    service: 服务名
+    function: 函数名
